@@ -16,6 +16,7 @@ subject to the following restrictions:
 
 #include "btPersistentManifold.h"
 #include "LinearMath/btTransform.h"
+#include "BulletCollision/CollisionDispatch/btCollisionObject.h"
 
 
 btScalar					gContactBreakingThreshold = btScalar(0.02);
@@ -289,7 +290,7 @@ void btPersistentManifold::refreshContactPoints(const btTransform& trA,const btT
 			} else
 			{
 				//contact point processed callback
-				if (gContactProcessedCallback)
+				if (gContactProcessedCallback && (btCollisionObject::CF_CUSTOM_MATERIAL_CALLBACK & m_body0->getCollisionFlags() & m_body1->getCollisionFlags()))
 					(*gContactProcessedCallback)(manifoldPoint,(void*)m_body0,(void*)m_body1);
 			}
 		}
